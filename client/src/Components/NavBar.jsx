@@ -21,7 +21,6 @@ const Navbar = () => {
         {!loading && (
           <div className="flex items-center space-x-4">
             {user ? (
-              // --- Links for logged-in users ---
               <>
                 <Link to="/" className="hover:text-yellow-400">Home</Link>
                 <Link to="/texts" className="hover:text-yellow-400">Practice</Link>
@@ -38,6 +37,7 @@ const Navbar = () => {
                 <Link to="/register" className="bg-yellow-400 text-gray-900 px-3 py-1 rounded hover:bg-yellow-500 font-semibold">
                   Register
                 </Link>
+                 <Link to="/leaderboard" className="hover:text-yellow-400">Leaderboard</Link>
               </>
             )}
           </div>

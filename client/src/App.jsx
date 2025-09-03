@@ -17,7 +17,7 @@ import ResetPassword from './Pages/ResetPassword.jsx'
 const App = () => {
   return (
     //  Add flexbox classes to this main div
-    <div className="flex flex-col min-h-screen bg-gray-900">
+    <div className="flex flex-col min-h-screen bg-gray-900" >
       <NavBar/>
       {/* Add the flex-grow class to the main content area */}
       <main className="flex-grow container mx-auto p-4">
@@ -33,7 +33,6 @@ const App = () => {
            <Route element={<Protected />}>
               <Route path="/profile" element={<Profile />} />
                <Route path='/add-text' element={<AddText/>}/>
-              {/* Add any other protected routes here */}
             </Route>
           <Route path="/register" element={<Register />} />
           <Route path='/verify' element={<Verify/>}/>

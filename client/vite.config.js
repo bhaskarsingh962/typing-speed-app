@@ -8,7 +8,7 @@ export default defineConfig({
     port : 5181,
     proxy: {
       '/api': {
-        target: 'http://localhost:5067', // Your backend server's address
+        target:  import.meta.env.BACKEND_URL, // Your backend server's address
         changeOrigin: true,
       },
     }
