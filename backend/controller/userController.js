@@ -55,7 +55,7 @@ const userRegistration = async (req, res) => {
     await user.save();
 
     if (user) {
-      const message = `Welcome!${name} Your verification code is: ${otp}`;
+      const message = `Welcome! ${name} Your verification code is: ${otp}`;
       await sendEmail({
         email: user.email,
         subject: "Verify Your Email Address",
@@ -133,6 +133,8 @@ const verifyEmail = async (req, res) => {
     });
   }
 };
+
+
 const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;

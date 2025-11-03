@@ -13,15 +13,20 @@ const TypingTest = ({ sourceText, userInput, timer, isTestActive, results, onInp
     }, [sourceText, results]);
 
     useEffect(() => {
-        if (textDisplayRef.current) {
-            const activeChar = textDisplayRef.current.querySelector('.active-char');
-            if (activeChar) {
-                const containerWidth = textDisplayRef.current.offsetWidth;
-                // 2. Fixed the scroll calculation to be '/ 2' for proper centering
-                const scrollOffset = activeChar.offsetLeft - containerWidth / 2 + activeChar.offsetWidth / 2;
-                textDisplayRef.current.scrollLeft = scrollOffset;
-            }
-        }
+        const container = textDisplayRef.current;
+        if (!container) return;
+        const activeChar = container.querySelector('.active-char');
+        if (!activeChar) return;
+
+        // 1) Don't move at all before typing begins (prevents initial jump)
+        if (userInput.length === 0) return;
+
+        // 2) Only scroll when content actually overflows the container
+        const hasHorizontalOverflow = container.scrollWidth > container.clientWidth;
+        if (!hasHorizontalOverflow) return;
+
+        // 3) Keep the active character visible and roughly centered, smoothly
+        activeChar.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
     }, [userInput]);
 
     const getCharClass = (char, index) => {
@@ -47,7 +52,7 @@ const TypingTest = ({ sourceText, userInput, timer, isTestActive, results, onInp
             
             <div
                 ref={textDisplayRef}
-                className="bg-gray-900 p-6 rounded-lg text-2xl tracking-wider font-mono select-none mb-6 cursor-text overflow-hidden whitespace-nowrap"
+                className="bg-gray-900 p-6 rounded-lg text-2xl tracking-wider font-mono select-none mb-6 cursor-text w-full max-w-4xl h-24 overflow-x-auto overflow-y-hidden whitespace-nowrap scroll-smooth"
                 onClick={() => inputRef.current.focus()}
             >
                 {sourceText && sourceText.split('').map((char, index) => (

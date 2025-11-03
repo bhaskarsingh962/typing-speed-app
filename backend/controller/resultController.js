@@ -162,54 +162,54 @@ const getUserRank = async(req, res) =>{
     }
 }
 
-const getUserRankByDifficulty = async(req, res) =>{
-    try {
-        const user = req.user._id;
-        const {difficulty} = req.params;
+// const getUserRankByDifficulty = async(req, res) =>{
+//     try {
+//         const user = req.user._id;
+//         const {difficulty} = req.params;
 
-        if(!['easy','medium','hard'].includes(difficulty)){
-            return res.status(400).json({success: false, message:'Invalid difficulty'});    
-        }
-        const userBestResult = await resultModel.aggregate([
-            { $lookup: { from: 'texts', localField: 'text', foreignField: '_id', as: 'textDetails' } },
-            { $unwind: '$textDetails' },
-            { $match: { 'textDetails.difficulty': difficulty, user: user } },
-            { $sort: { wpm: -1 } },
-            { $limit: 1 }
-        ]);
+//         if(!['easy','medium','hard'].includes(difficulty)){
+//             return res.status(400).json({success: false, message:'Invalid difficulty'});    
+//         }
+//         const userBestResult = await resultModel.aggregate([
+//             { $lookup: { from: 'texts', localField: 'text', foreignField: '_id', as: 'textDetails' } },
+//             { $unwind: '$textDetails' },
+//             { $match: { 'textDetails.difficulty': difficulty, user: user } },
+//             { $sort: { wpm: -1 } },
+//             { $limit: 1 }
+//         ]);
 
-        if(userBestResult.length === 0){
-            return res.status(200).json({
-                success: true,
-                message: "User has not completed any tests yet.",
-                rank: "N/A"
-            });
-        }
+//         if(userBestResult.length === 0){
+//             return res.status(200).json({
+//                 success: true,
+//                 message: "User has not completed any tests yet.",
+//                 rank: "N/A"
+//             });
+//         }
 
-        const userBestWpm = userBestResult[0].wpm;
+//         const userBestWpm = userBestResult[0].wpm;
 
-       const higherRanker = await resultModel.aggregate([
-            { $lookup: { from: 'texts', localField: 'text', foreignField: '_id', as: 'textDetails' } },
-            { $unwind: '$textDetails' },
-            { $match: { 'textDetails.difficulty': difficulty } },
-            { $group: { _id: "$user", maxWpm: { $max: "$wpm" } } },
-            { $match: { maxWpm: { $gt: userBestWpm } } },
-            { $count: "higherRanks" }
-        ]);
+//        const higherRanker = await resultModel.aggregate([
+//             { $lookup: { from: 'texts', localField: 'text', foreignField: '_id', as: 'textDetails' } },
+//             { $unwind: '$textDetails' },
+//             { $match: { 'textDetails.difficulty': difficulty } },
+//             { $group: { _id: "$user", maxWpm: { $max: "$wpm" } } },
+//             { $match: { maxWpm: { $gt: userBestWpm } } },
+//             { $count: "higherRanks" }
+//         ]);
 
-        const rank = higherRanker.length > 0 ? higherRanker[0].higherRanks + 1 : 1;
+//         const rank = higherRanker.length > 0 ? higherRanker[0].higherRanks + 1 : 1;
 
-        return res.status(200).json({
-            success: true,
-            message: "User rank fetched successfully",
-            rank: rank,
-            bestScore: userBestWpm
-        });
+//         return res.status(200).json({
+//             success: true,
+//             message: "User rank fetched successfully",
+//             rank: rank,
+//             bestScore: userBestWpm
+//         });
         
-    } catch (error) {
-        res.status(500).json({success: false, message:'Server Errror'});
-    }
-}
+//     } catch (error) {
+//         res.status(500).json({success: false, message:'Server Errror'});
+//     }
+// }
 
 export {addResult, getUserResult, getLeaderboard, getUserRank};
 
