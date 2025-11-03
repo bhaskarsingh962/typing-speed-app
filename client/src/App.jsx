@@ -1,7 +1,7 @@
 import React from 'react'
 import Home from './Pages/Home.jsx'
 import Register from './Pages/Register.jsx'
-import Login from './Pages/login.jsx'
+import Login from './Pages/Login.jsx'
 import Verify from './Pages/Verify.jsx'
 import { Routes, Route } from 'react-router-dom';
 import Profile from './Pages/Profile.jsx';
