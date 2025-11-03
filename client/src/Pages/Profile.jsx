@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import {AuthContext} from '../context/AuthContext.jsx';
+import {AuthContext} from '../Context/AuthContext.jsx';
 
 const Profile = () => {
   const { user } = useContext(AuthContext);

@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useRef, useContext } from "react";
 import axios from "axios";
-import { AuthContext } from "../context/AuthContext.jsx";
+import { AuthContext } from "../Context/AuthContext.jsx";
 
 export const useTyping = (
   initialTextObj = { id: null, content: "" },
