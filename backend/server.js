@@ -5,34 +5,38 @@ import connectDB from './database/index.js';
 import cookieParser from 'cookie-parser';
 import { userRouter } from './routes/userRoutes.js';
 import { textRouter } from './routes/textRoutes.js';
-import {resultRouter} from './routes/resultRoutes.js';
+import { resultRouter } from './routes/resultRoutes.js';
 
-//intialize the express application
+
 const app = express();
+
+// Middlewares
 app.use(express.json());
-connectDB();
-
-//using the middleware
-app.use(cors());
-
+app.use(cors({
+  origin: true, 
+  credentials: true
+}));
 app.use(cookieParser());
 
-//defining the test route
+// Connect to DB
+connectDB();
 
+// Routes
 app.use('/api/users', userRouter);
-app.use('/api/texts',textRouter);
+app.use('/api/texts', textRouter);
 app.use('/api/results', resultRouter);
 
-//testing route
-app.use('/', (req, res) => {
-    
-    res.send({
-        success: true,
-        message: "Server is running"
-    });});
+// Default route
+app.get('/', (req, res) => {
+  res.json({
+    success: true,
+    message: 'Server is running successfully 🚀'
+  });
+});
 
-const port = process.env.PORT || 5002;
 
-app.listen(port, () => {
- console.log(`Server is listening on http://localhost:${port}`);
+const PORT = process.env.PORT || 10000;
+
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`✅ Server is listening on port ${PORT}`);
 });
