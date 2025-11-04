@@ -114,15 +114,10 @@ const verifyEmail = async (req, res) => {
     user.otp = undefined;
     await user.save();
     const token = createToken(user._id);
-    res.cookie("token", token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
-      expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
-    });
     res.status(200).json({
       success: true,
       message: "Email verified successfully",
+      token: token,
       name: user.name,
       email: user.email,
     });
@@ -159,17 +154,12 @@ const loginUser = async (req, res) => {
       });
     }
     const token = createToken(user._id);
-    res.cookie("token", token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
-      maxAge: 30 * 24 * 60 * 60 * 1000,
-    });
 
     console.log("login successful");
     return res.status(200).json({
       success: true,
       message: "Login successful",
+      token: token,
       user:{_id: user._id,
             name: user.name,
             email: user.email}
@@ -182,10 +172,6 @@ const loginUser = async (req, res) => {
 
 const logoutUser = async (req, res) => {
   try {
-    res.cookie("token", null, {
-      expires: new Date(Date.now()),
-      httpOnly: true,
-    });
     res.status(200).json({
       success: true,
       message: "Logout successful",

@@ -1,6 +1,8 @@
-import React,{useState} from 'react'
+import React,{useState, useContext} from 'react'
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { AuthContext } from '../Context/AuthContext.jsx';
+
 const Verify = () => {
     const [formData, setFormData] = useState({
      email: '',
@@ -10,6 +12,7 @@ const Verify = () => {
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
   const navigate = useNavigate();
+  const { login } = useContext(AuthContext);
 
   const { email, otp } = formData;
 
@@ -23,13 +26,20 @@ const Verify = () => {
     setSuccess(null);
     
     try {
-      await axios.post('/api/users/verify-email', {
+      const response = await axios.post('/api/users/verify-email', {
         email,
         otp
       });
+      // Store token and user data
+      const userData = {
+        _id: null, // Not returned in verify response, but will be set after login
+        name: response.data.name,
+        email: response.data.email
+      };
+      login(userData, response.data.token);
       setSuccess("Verification successful....");
       // Optional: Redirect to a verification page or login page after a delay
-      setTimeout(() => navigate('/login'), 3000);
+      setTimeout(() => navigate('/'), 3000);
     } catch (err) {
       setError(err.response?.data?.message || 'An error occurred during verification.');
     }

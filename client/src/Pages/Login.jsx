@@ -39,7 +39,7 @@ const Login = () => {
         email,
         password,
       });
-      login(response.data.user);
+      login(response.data.user, response.data.token);
       setSuccess("Login successful!");
       setTimeout(() => navigate('/'), 1500);
     } catch (err) {

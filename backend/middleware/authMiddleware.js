@@ -4,8 +4,9 @@ import userModel from '../models/usermodel.js';
 const authUser = async (req, res, next) =>{
      
    try {
-     const token = req.cookies.token;
- 
+     const authHeader = req.headers.authorization;
+     const token = authHeader && authHeader.split(" ")[1];
+
      if(token){
          const decoded = jwt.verify(token, process.env.JWT_SECRET);
          req.user = await userModel.findById(decoded.id).select('-password');
