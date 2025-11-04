@@ -13,7 +13,7 @@ const app = express();
 // Middlewares
 app.use(express.json());
 app.use(cors({
-  origin: true, 
+  origin: "https://typing-speed-app-qout.onrender.com", 
   credentials: true
 }));
 app.use(cookieParser());
@@ -40,3 +40,4 @@ const PORT = process.env.PORT || 10000;
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`✅ Server is listening on port ${PORT}`);
 });
+
